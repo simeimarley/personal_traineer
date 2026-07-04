@@ -1,131 +1,146 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rafael | Personal Trainer</title>
+  <title>Marley | Personal Trainer</title>
   <meta name="description" content="">
+  
+  <!-- Preconnect e Fontes Premium (Bebas Neue para Títulos + Inter para Corpo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <header class="main-header">
-    <div class="container header-container">
-      <a href="#" class="logo" id="brand-logo">RAFAEL<span>.</span></a>
-      <nav class="nav-menu">
-        <ul>
-          <li><a href="#about">Sobre</a></li>
-          <li><a href="#services">Serviços</a></li>
-          <li><a href="#plans">Planos</a></li>
-          <li><a href="#testimonials">Resultados</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#" class="btn btn-primary btn-header cta-whatsapp">Agendar</a></li>
-        </ul>
+  <!-- Menu Superior com Efeito de Scroll Invisível/Vidro -->
+  <header class="header" id="main-header">
+    <div class="container header__inner">
+      <a href="#" class="brand" id="brand-logo">MARLEY<span>.</span></a>
+      <nav class="nav">
+        <a href="#about">Sobre</a>
+        <a href="#services">Serviços</a>
+        <a href="#plans">Planos</a>
+        <a href="#testimonials">Resultados</a>
+        <a href="#faq">FAQ</a>
+        <a href="#" class="btn btn--primary cta-whatsapp" style="min-height:40px; padding: 0.5rem 1rem; font-size:0.85rem;">Agendar</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero-section reveal" id="hero">
-      <div class="container hero-container">
-        <span class="hero-tagline" id="hero-tagline">PERSONAL TRAINER · SÃO PAULO</span>
+    <!-- Seção Hero -->
+    <section class="hero reveal" id="hero">
+      <div class="hero__bg"></div>
+      <div class="hero__overlay"></div>
+      <div class="container hero__content">
+        <span class="eyebrow" id="hero-tagline">PERSONAL TRAINER · SALVADOR</span>
         <h1 id="hero-title">Carregando...</h1>
-        <p class="hero-subline" id="hero-subline">Carregando...</p>
-        <div class="hero-buttons">
-          <a href="#" class="btn btn-primary cta-whatsapp">Avaliação gratuita</a>
-          <a href="#plans" class="btn btn-outline">Ver planos</a>
+        <p id="hero-subline">Carregando...</p>
+        <div class="hero__cta">
+          <a href="#" class="btn btn--primary cta-whatsapp">Avaliação gratuita</a>
+          <a href="#plans" class="btn btn--ghost">Ver planos</a>
         </div>
       </div>
+      <div class="hero__scroll">SCROLL ↓</div>
     </section>
 
-    <section id="about" class="container reveal">
-      <div class="about-grid">
-        <div class="about-img-container">
+    <!-- Seção Quem Sou / Sobre -->
+    <section id="about" class="about">
+      <div class="container about__grid reveal">
+        <div class="about__photo">
           <img id="about-img" src="" alt="Foto do Treinador">
         </div>
-        <div class="about-text">
-          <span class="section-tag">Quem Sou</span>
+        <div class="about__content">
+          <span class="eyebrow">Quem Sou</span>
           <h2>Método, ciência e acompanhamento de verdade.</h2>
           <p id="about-bio">Carregando...</p>
-          <div class="stats-grid" id="stats-container">
-            </div>
+          <div class="stats" id="stats-container">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="services" class="reveal">
-      <div class="container">
-        <span class="section-tag">O que ofereço</span>
+    <!-- Seção Serviços -->
+    <section id="services">
+      <div class="container reveal">
+        <span class="eyebrow">O que ofereço</span>
         <h2>Serviços</h2>
-        <div class="services-grid" id="services-container">
-          </div>
-      </div>
-    </section>
-
-    <section id="plans" class="reveal">
-      <div class="container">
-        <span class="section-tag">Investimento</span>
-        <h2>Planos</h2>
-        <div class="plans-grid" id="plans-container">
-          </div>
-      </div>
-    </section>
-
-    <section id="testimonials" class="reveal">
-      <div class="container">
-        <span class="section-tag">Prova Social</span>
-        <h2>Resultados Reais</h2>
-        <div class="testimonials-grid" id="testimonials-container">
-          </div>
-      </div>
-    </section>
-
-    <section id="faq" class="container reveal">
-      <span class="section-tag">Dúvidas</span>
-      <h2>Perguntas Frequentes</h2>
-      <div class="faq-list" id="faq-container">
+        <div class="grid-3" id="services-container">
+          <!-- Injetado dinamicamente via JS -->
         </div>
+      </div>
     </section>
 
-    <section class="cta-final reveal">
-      <div class="container cta-final-container">
-        <h2>Pronto para começar?</h2>
-        <p>Sua primeira conversa é gratuita. Sem compromisso.</p>
-        <a href="#" class="btn btn-primary cta-whatsapp">Falar no WhatsApp</a>
+    <!-- Seção Planos -->
+    <section id="plans">
+      <div class="container reveal">
+        <span class="eyebrow">Investimento</span>
+        <h2>Planos Comerciais</h2>
+        <div class="grid-3" id="plans-container">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Resultados (Carousel Nativo Otimizado) -->
+    <section id="testimonials">
+      <div class="container reveal">
+        <span class="eyebrow">Prova Social</span>
+        <h2>Resultados Reais</h2>
+        <div class="results__track" id="testimonials-container">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção FAQ -->
+    <section id="faq" class="faq">
+      <div class="container reveal">
+        <span class="eyebrow">Dúvidas</span>
+        <h2>Perguntas Frequentes</h2>
+        <div class="faq__list" id="faq-container">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="main-footer">
-    <div class="container footer-container">
-      <div class="logo">RAFAEL<span>.</span></div>
-      <div class="footer-socials" id="socials-container">
-        </div>
-      <p>&copy; <span id="footer-year"></span> Rafael Costa. Todos os direitos reservados.</p>
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container">
+      <div class="brand">RAFAEL<span>.</span></div>
+      <div class="footer__social" id="socials-container">
+        <!-- Injetado via JS -->
+      </div>
+      <small>&copy; <span id="footer-year"></span> Rafael Costa. Todos os direitos reservados.</small>
     </div>
   </footer>
 
-  <div class="floating-container">
-    <button class="floating-btn floating-chatbot" id="chat-toggle" aria-label="Abrir Chatbot">
+  <!-- 🎈 Elementos Flutuantes da Interface (Empilhados via CSS Tokens) -->
+  <div class="fab-stack">
+    <button class="fab fab--chat" id="chat-toggle" aria-label="Abrir Chatbot">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
     </button>
-    <a href="#" class="floating-btn floating-whatsapp cta-whatsapp" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <a href="#" class="fab fab--wa cta-whatsapp" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
     </a>
   </div>
 
-  <div class="chat-panel" id="chat-panel">
-    <div class="chat-header">
-      <span style="font-weight:700; font-size:0.95rem;">Assistente Virtual</span>
-      <button id="chat-close" style="background:none; border:none; color:white; font-size:1.4rem; cursor:pointer;">&times;</button>
+  <!-- Painel do Chatbot Premium -->
+  <div class="chat-panel" id="chat-panel" style="display: none;">
+    <div class="chat-panel__head">
+      <strong>Assistente Virtual</strong>
+      <button id="chat-close" class="chat-panel__close">&times;</button>
     </div>
-    <div class="chat-messages" id="chat-messages"></div>
-    <form class="chat-input-wrapper" id="chat-form">
+    <div class="chat-panel__body" id="chat-messages"></div>
+    <form class="chat-panel__form" id="chat-form">
       <input type="text" id="chat-input" placeholder="Pergunte algo..." required autocomplete="off" maxlength="250">
-      <button type="submit">Enviar</button>
+      <button type="submit" id="chat-submit">Enviar</button>
     </form>
   </div>
 

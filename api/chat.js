@@ -14,14 +14,28 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Primeira Mensagem do Bot
+  // Primeira Mensagem Automática do Assistente
   const botMsg = document.createElement('div');
-  botMsg.className = 'chat-bubble bubble-bot';
+  botMsg.className = 'msg msg--bot';
   botMsg.textContent = SITE.chatbot.greeting;
   messagesContainer.appendChild(botMsg);
 
-  toggleBtn.addEventListener('click', () => panel.classList.toggle('active'));
-  closeBtn.addEventListener('click', () => panel.classList.remove('active'));
+  // Exibe o painel alterando o estilo de display e aplicando a classe de animação
+  toggleBtn.addEventListener('click', () => {
+    if (panel.style.display === 'none') {
+      panel.style.display = 'flex';
+      setTimeout(() => panel.classList.add('active'), 10);
+    } else {
+      fecharPainel();
+    }
+  });
+
+  closeBtn.addEventListener('click', fecharPainel);
+
+  function fecharPainel() {
+    panel.classList.remove('active');
+    setTimeout(() => panel.style.display = 'none', 250);
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -30,16 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     input.value = '';
     
-    // Mensagem do usuário na tela
     const userBubble = document.createElement('div');
-    userBubble.className = 'chat-bubble bubble-user';
+    userBubble.className = 'msg msg--user';
     userBubble.textContent = text;
     messagesContainer.appendChild(userBubble);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // Mensagem temporária de digitando
     const typingBubble = document.createElement('div');
-    typingBubble.className = 'chat-bubble bubble-bot';
+    typingBubble.className = 'msg msg--bot msg--typing';
     typingBubble.textContent = 'Digitando...';
     messagesContainer.appendChild(typingBubble);
 
@@ -49,28 +61,27 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: `Você é o assistente virtual do Personal Trainer ${SITE.trainer.name}. Ajude o usuário e recomende falar no WhatsApp.` },
+            { role: "system", content: `Você é o assistente virtual do Personal Trainer ${SITE.trainer.name}. Seja motivador e direto. Indique o agendamento no WhatsApp.` },
             { role: "user", content: text }
           ]
         })
       });
 
       typingBubble.remove();
-
       if (!res.ok) throw new Error();
 
       const data = await res.json();
       const botResponse = data.choices[0].message.content;
 
       const replyBubble = document.createElement('div');
-      replyBubble.className = 'chat-bubble bubble-bot';
+      replyBubble.className = 'msg msg--bot';
       replyBubble.textContent = botResponse;
       messagesContainer.appendChild(replyBubble);
     } catch {
       typingBubble.remove();
       const errorBubble = document.createElement('div');
-      errorBubble.className = 'chat-bubble bubble-bot';
-      errorBubble.textContent = 'Estou com dificuldades para responder agora. Por favor, clique no botão do WhatsApp para falar direto comigo!';
+      errorBubble.className = 'msg msg--bot';
+      errorBubble.textContent = 'Estou instável no momento. Clique no WhatsApp para falar direto comigo!';
       messagesContainer.appendChild(errorBubble);
     }
 
