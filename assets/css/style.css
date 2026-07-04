@@ -89,7 +89,12 @@ section { padding-block: clamp(3.5rem, 8vw, 6rem); }
 .hero__content h1 span { background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero__content p { margin: 1.25rem auto 2rem; max-width: 520px; font-size: clamp(1rem, 2.2vw, 1.15rem); }
 .hero__cta { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
-.hero__scroll { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; letter-spacing: 0.3em; opacity: 0.5; animation: bounce 2s infinite; }
+.hero__scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; letter-spacing: 0.3em; opacity: 0.5; animation: bounce 2s infinite; 
+/* 🌟 Novas propriedades de blindagem de alinhamento: */
+  white-space: nowrap; /* Impede que o texto quebre linha em telas pequenas */
+  width: max-content;   /* Força o componente a ter o tamanho exato do texto */
+  text-align: center;
+}
 @keyframes bounce { 0%,100% { transform: translate(-50%, 0);} 50% { transform: translate(-50%, 8px);} }
 
 /* ---------- About ---------- */
