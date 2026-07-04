@@ -1,37 +1,50 @@
 // config.js
 export const SITE = {
   trainer: { 
-    name: "Lucas Silva", 
-    tagline: "Transforme seu corpo e conquiste sua alta performance com treinos sob medida.", 
-    photo: "assets/img/hero.jpg" 
+    name: "Rafael", 
+    tagline: "Transforme seu corpo. Reprograme sua mente.", 
+    subline: "Programas 100% personalizados de treino e nutrição, presencial ou online. Resultados reais em semanas — sem promessas mágicas.",
+    photo: "assets/img/hero.jpg" // Aqui o cliente coloca a foto dele
   },
   brand: { 
-    primary: "#E63946", // Cor de destaque (botões, links ativos)
-    dark: "#1D1D1D",    // Fundo principal escuro
-    light: "#F1FAEE",   // Textos claros e contrastes
+    primary: "#FF4C4C",  // Vermelho Coral idêntico ao do Lovable
+    dark: "#090A0C",     // Fundo Obsidian total escuro dos prints
+    cardBg: "#13161E",   // Fundo cinza-escuro azulado dos cards
+    light: "#FFFFFF",    // Texto puro claro
     font: "'Inter', sans-serif" 
   },
+  stats: [
+    { value: "10+", label: "Anos" },
+    { value: "500+", label: "Alunos" },
+    { value: "98%", label: "Recomendam" }
+  ],
   whatsapp: { 
-    phone: "5571999999999", // Exemplo com o DDD de Salvador (71)
-    message: "Olá, Lucas! Vim pelo site e quero agendar minha avaliação física." 
+    phone: "5511999999999", 
+    message: "Olá, Rafael! Vi seu site e quero agendar minha avaliação gratuita." 
   },
   chatbot: { 
     enabled: true, 
-    greeting: "Olá! Sou o assistente virtual do Lucas Silva. Estou aqui para tirar suas dúvidas sobre consultoria e treinos. Como posso te ajudar hoje?" 
+    greeting: "Olá! Sou o assistente virtual do Rafael. Como posso te ajudar na sua jornada de treinos hoje?" 
   },
   services: [
-    { icon: "dumbbell", title: "Consultoria Online", desc: "Planilhas de treino personalizadas via aplicativo com acompanhamento semanal de evolução." },
-    { icon: "users", title: "Treino Presencial", desc: "Acompanhamento individualizado e focado na correção postural e máxima intensidade." },
-    { icon: "heart", title: "Qualidade de Vida", desc: "Foco em emagrecimento saudável, ganho de massa magra e longevidade física." }
+    { title: "Treino Presencial", desc: "Acompanhamento 1-a-1 na academia parceira, com plano personalizado." },
+    { title: "Consultoria Online", desc: "Plano semanal, vídeos dos exercícios e feedback contínuo por app." },
+    { title: "Reeducação Postural", desc: "Programas para dores crônicas, mobilidade e qualidade de vida." }
   ],
   plans: [
-    { name: "Mensal", price: "149", features: ["Treino personalizado", "Suporte via WhatsApp", "Ajuste mensal"], recommended: false },
-    { name: "Trimestral", price: "359", features: ["Treino personalizado", "Suporte prioritário", "Acesso a comunidade", "Avaliação bioimpedância"], recommended: true },
-    { name: "Semestral", price: "599", features: ["Planejamento de longo prazo", "Suporte 24/7", "Bônus: Guia Nutricional"], recommended: false }
+    { name: "Online Essencial", price: "199", features: ["Treino personalizado", "App exclusivo", "Suporte por chat"], recommended: false, customPrice: "" },
+    { name: "Online Premium", price: "349", features: ["Tudo do Essencial", "Ajustes semanais", "Videochamada quinzenal", "Plano alimentar"], recommended: true, customPrice: "" },
+    { name: "Presencial", price: "", features: ["Aulas 1-a-1", "Avaliação física completa", "Periodização mensal"], recommended: false, customPrice: "Sob Consulta" }
   ],
-  results: [
-    { name: "Carlos M.", before: "assets/img/antes1.jpg", after: "assets/img/depois1.jpg" },
-    { name: "Mariana S.", before: "assets/img/antes2.jpg", after: "assets/img/depois2.jpg" }
+  testimonials: [
+    { text: '"-12 kg em 5 meses e a autoestima que eu não tinha há anos."', name: "MARINA, 34" },
+    { text: '"Voltei a correr sem dor no joelho. Programa impecável."', name: "DIEGO, 41" },
+    { text: '"Ganhei massa magra e finalmente entendi como me alimentar."', name: "CAMILA, 27" }
+  ],
+  faq: [
+    { q: "Preciso já treinar para começar?", a: "Não. Recebo alunos de todos os níveis, incluindo iniciantes absolutos." },
+    { q: "Como funciona a avaliação gratuita?", a: "Conversamos por 20 minutos por WhatsApp ou vídeo para entender seu objetivo e histórico. Sem compromisso." },
+    { q: "Posso cancelar quando quiser?", a: "Sim. Sem fidelidade, sem multa. O pagamento é mensal." }
   ],
   social: { 
     instagram: "https://instagram.com", 
@@ -39,8 +52,7 @@ export const SITE = {
     tiktok: "https://tiktok.com" 
   },
   seo: { 
-    title: "Lucas Silva | Personal Trainer & Consultoria de Resultados", 
-    description: "Alcance seus objetivos de forma rápida e segura com a metodologia exclusiva de treino do Personal Lucas Silva.", 
-    ogImage: "assets/img/og-image.jpg" 
+    title: "Rafael | Personal Trainer", 
+    description: "Transforme seu corpo e reprograme sua mente com treinos personalizados em São Paulo." 
   }
 };

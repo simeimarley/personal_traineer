@@ -1,0 +1,10 @@
+# Ignorar arquivos de credenciais locais (Segurança)
+.env
+.env.local
+
+# Ignorar pastas de dependências (se usar node no futuro)
+node_modules/
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db

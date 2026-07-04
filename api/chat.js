@@ -1,66 +1,79 @@
-// /api/chat.js
-import fetch from 'node-fetch';
+// assets/js/chatbot.js
+import { SITE } from '../../config.js';
 
-// Sistema simples de cache em memória para Rate Limit (Escopo Global da Instância Serverless)
-const ipCache = new Map();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minuto
-const MAX_REQUESTS_PER_WINDOW = 20;  // Máximo de 20 requisições por minuto por IP
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('chat-toggle');
+  const closeBtn = document.getElementById('chat-close');
+  const panel = document.getElementById('chat-panel');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const messagesContainer = document.getElementById('chat-messages');
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
+  if (!SITE.chatbot.enabled) {
+    toggleBtn.style.display = 'none';
+    return;
   }
 
-  // Captura o IP real do cliente através dos cabeçalhos da Vercel
-  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'anonymous';
-  const now = Date.now();
+  // Primeira Mensagem do Bot
+  const botMsg = document.createElement('div');
+  botMsg.className = 'chat-bubble bubble-bot';
+  botMsg.textContent = SITE.chatbot.greeting;
+  messagesContainer.appendChild(botMsg);
 
-  // Controle de Rate Limit
-  if (!ipCache.has(clientIp)) {
-    ipCache.set(clientIp, { count: 1, startTime: now });
-  } else {
-    const userData = ipCache.get(clientIp);
-    if (now - userData.startTime < RATE_LIMIT_WINDOW) {
-      if (userData.count >= MAX_REQUESTS_PER_WINDOW) {
-        return res.status(429).json({ error: "Muitas requisições. Por favor, aguarde um minuto." });
-      }
-      userData.count++;
-    } else {
-      // Janela expirou, reinicia a contagem
-      ipCache.set(clientIp, { count: 1, startTime: now });
+  toggleBtn.addEventListener('click', () => panel.classList.toggle('active'));
+  closeBtn.addEventListener('click', () => panel.classList.remove('active'));
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    
+    // Mensagem do usuário na tela
+    const userBubble = document.createElement('div');
+    userBubble.className = 'chat-bubble bubble-user';
+    userBubble.textContent = text;
+    messagesContainer.appendChild(userBubble);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Mensagem temporária de digitando
+    const typingBubble = document.createElement('div');
+    typingBubble.className = 'chat-bubble bubble-bot';
+    typingBubble.textContent = 'Digitando...';
+    messagesContainer.appendChild(typingBubble);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: `Você é o assistente virtual do Personal Trainer ${SITE.trainer.name}. Ajude o usuário e recomende falar no WhatsApp.` },
+            { role: "user", content: text }
+          ]
+        })
+      });
+
+      typingBubble.remove();
+
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+      const botResponse = data.choices[0].message.content;
+
+      const replyBubble = document.createElement('div');
+      replyBubble.className = 'chat-bubble bubble-bot';
+      replyBubble.textContent = botResponse;
+      messagesContainer.appendChild(replyBubble);
+    } catch {
+      typingBubble.remove();
+      const errorBubble = document.createElement('div');
+      errorBubble.className = 'chat-bubble bubble-bot';
+      errorBubble.textContent = 'Estou com dificuldades para responder agora. Por favor, clique no botão do WhatsApp para falar direto comigo!';
+      messagesContainer.appendChild(errorBubble);
     }
-  }
 
-  try {
-    const { messages } = req.body;
-
-    if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: "Formato de corpo de requisição inválido" });
-    }
-
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile", // Modelo balanceado para chat veloz
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 500
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return res.status(response.status).json({ error: "Erro na API da Groq", details: errorData });
-    }
-
-    const data = await response.json();
-    return res.status(200).json(data);
-
-  } catch (error) {
-    return res.status(500).json({ error: "Erro interno no servidor de proxy", details: error.message });
-  }
-}
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  });
+});

@@ -2,139 +2,117 @@
 import { SITE } from '../../config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  inicializarConfiguracoesBase();
-  renderizarDadosDoCliente();
-  configurarAnimacaoScroll();
+  aplicarIdentidadeVisual();
+  injetarConteudoDinamico();
+  inicializarAnimacaoScroll();
 });
 
-/**
- * Define as propriedades de estilo essenciais no :root a partir do arquivo de configuração
- */
-function inicializarConfiguracoesBase() {
+function aplicarIdentidadeVisual() {
   const root = document.documentElement;
   root.style.setProperty('--primary', SITE.brand.primary);
   root.style.setProperty('--dark', SITE.brand.dark);
+  root.style.setProperty('--card-bg', SITE.brand.cardBg);
   root.style.setProperty('--light', SITE.brand.light);
   root.style.setProperty('--font-main', SITE.brand.font);
 }
 
-/**
- * Injeta todos os textos, links e mídias estruturadas com segurança (utilizando textContent)
- */
-function renderizarDadosDoCliente() {
-  // SEO & Head do documento
+function injetarConteudoDinamico() {
+  // SEO & Textos Hero
   document.title = SITE.seo.title;
   document.querySelector('meta[name="description"]').setAttribute('content', SITE.seo.description);
-  
-  // Elementos Nominativos Básicos
-  document.getElementById('brand-logo').textContent = SITE.trainer.name.split(' ')[0];
-  document.getElementById('hero-title').textContent = SITE.trainer.name;
-  document.getElementById('hero-tagline').textContent = SITE.trainer.tagline;
-  document.getElementById('about-bio').textContent = `Olá, eu sou o ${SITE.trainer.name}. Minha missão é extrair sua melhor versão através de metodologias cientificamente validadas de treino dinâmico e acompanhamento próximo.`;
-  document.getElementById('footer-name').textContent = SITE.trainer.name;
-  document.getElementById('footer-year').textContent = new Date().getFullYear();
+  document.getElementById('brand-logo').innerHTML = `${SITE.trainer.name.toUpperCase()}<span>.</span>`;
+  document.getElementById('hero-title').textContent = SITE.trainer.tagline;
+  document.getElementById('hero-subline').textContent = SITE.trainer.subline;
+  document.getElementById('about-bio').textContent = SITE.trainer.subline;
 
-  // Tratamento de Imagens Seguras
-  const heroSection = document.getElementById('hero');
-  heroSection.style.backgroundImage = `linear-gradient(rgba(29,29,29,0.7), rgba(29,29,29,0.95)), url('${SITE.trainer.photo}')`;
+  // Imagens
+  document.getElementById('hero').style.backgroundImage = `linear-gradient(rgba(9,10,12,0.75), rgba(9,10,12,0.98)), url('${SITE.trainer.photo}')`;
   document.getElementById('about-img').src = SITE.trainer.photo;
 
-  // URLs Dinâmicas do WhatsApp
+  // URL WhatsApp
   const linkWhats = `https://wa.me/${SITE.whatsapp.phone}?text=${encodeURIComponent(SITE.whatsapp.message)}`;
   document.querySelectorAll('.cta-whatsapp').forEach(el => el.setAttribute('href', linkWhats));
 
-  // Renderização Dinâmica - Serviços
-  const containerServicos = document.getElementById('services-container');
-  containerServicos.innerHTML = ''; // Limpa esqueleto
-  SITE.services.forEach(servico => {
-    const card = document.createElement('article');
+  // Injetar Caixa de Estatísticas (Stats)
+  const statsContainer = document.getElementById('stats-container');
+  statsContainer.innerHTML = '';
+  SITE.stats.forEach(st => {
+    const box = document.createElement('div');
+    box.className = 'stat-box';
+    box.innerHTML = `<span class="stat-value">${st.value}</span><span class="stat-label">${st.label}</span>`;
+    statsContainer.appendChild(box);
+  });
+
+  // Injetar Serviços
+  const servicesContainer = document.getElementById('services-container');
+  servicesContainer.innerHTML = '';
+  SITE.services.forEach(sv => {
+    const card = document.createElement('div');
     card.className = 'service-card';
-    
-    // SVG inline genérico simulando o ícone
     card.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18H6z"/></svg>
-      <h3></h3>
-      <p></p>
-    `;
-    card.querySelector('h3').textContent = servico.title;
-    card.querySelector('p').textContent = servico.desc;
-    containerServicos.appendChild(card);
-  });
-
-  // Renderização Dinâmica - Carrossel de Evoluções (Antes e Depois)
-  const containerResultados = document.getElementById('results-container-list');
-  containerResultados.innerHTML = '';
-  SITE.results.forEach(res => {
-    const item = document.createElement('div');
-    item.className = 'result-item';
-    item.innerHTML = `
-      <div class="result-grid">
-        <img class="img-before" src="" alt="Antes de ${res.name}" loading="lazy" width="150" height="200">
-        <img class="img-after" src="" alt="Depois de ${res.name}" loading="lazy" width="150" height="200">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
       </div>
-      <p></p>
+      <h3>${sv.title}</h3>
+      <p>${sv.desc}</p>
     `;
-    item.querySelector('.img-before').src = res.before;
-    item.querySelector('.img-after').src = res.after;
-    item.querySelector('p').textContent = `Evolução - ${res.name}`;
-    containerResultados.appendChild(item);
+    servicesContainer.appendChild(card);
   });
 
-  // Renderização Dinâmica - Planos comerciais
-  const containerPlanos = document.getElementById('plans-container');
-  containerPlanos.innerHTML = '';
-  SITE.plans.forEach(plano => {
-    const pCard = document.createElement('div');
-    pCard.className = `plan-card ${plano.recommended ? 'recommended' : ''}`;
+  // Injetar Planos Comercializáveis
+  const plansContainer = document.getElementById('plans-container');
+  plansContainer.innerHTML = '';
+  SITE.plans.forEach(pl => {
+    const card = document.createElement('div');
+    card.className = `plan-card ${pl.recommended ? 'recommended' : ''}`;
     
-    if(plano.recommended) {
-      const badge = document.createElement('span');
-      badge.className = 'badge';
-      badge.textContent = 'RECOMENDADO';
-      pCard.appendChild(badge);
-    }
+    let badgeHtml = pl.recommended ? `<span class="plan-badge">Mais Escolhido</span>` : '';
+    let precoHtml = pl.customPrice ? pl.customPrice : `R$ ${pl.price}<span>/mês</span>`;
 
-    const h3 = document.createElement('h3'); h3.textContent = plano.name; pCard.appendChild(h3);
-    const divPreco = document.createElement('div'); divPreco.className = 'plan-price';
-    divPreco.innerHTML = `R$ ${plano.price}<span>/mês</span>`; pCard.appendChild(divPreco);
+    let featuresHtml = '';
+    pl.features.forEach(ft => { featuresHtml += `<li>${ft}</li>`; });
 
-    const ul = document.createElement('ul');
-    ul.className = 'plan-features';
-    plano.features.forEach(feat => {
-      const li = document.createElement('li'); li.textContent = feat; ul.appendChild(li);
-    });
-    pCard.appendChild(ul);
-
-    const btnPlano = document.createElement('a');
-    btnPlano.className = 'btn btn-primary cta-whatsapp';
-    btnPlano.textContent = 'Começar Agora';
-    btnPlano.href = linkWhats;
-    pCard.appendChild(btnPlano);
-
-    containerPlanos.appendChild(pCard);
+    card.innerHTML = `
+      ${badgeHtml}
+      <h3>${pl.name}</h3>
+      <div class="plan-price">${precoHtml}</div>
+      <ul class="plan-features">${featuresHtml}</ul>
+      <a href="${linkWhats}" class="btn ${pl.recommended ? 'btn-primary' : 'btn-outline'}">Quero este</a>
+    `;
+    plansContainer.appendChild(card);
   });
+
+  // Injetar Testemunhos (Prova Social)
+  const testimonialsContainer = document.getElementById('testimonials-container');
+  testimonialsContainer.innerHTML = '';
+  SITE.testimonials.forEach(tm => {
+    const card = document.createElement('div');
+    card.className = 'testimonial-card';
+    card.innerHTML = `<p>${tm.text}</p><span class="testimonial-name">${tm.name}</span>`;
+    testimonialsContainer.appendChild(card);
+  });
+
+  // Injetar Perguntas Frequentes (FAQ Accordion)
+  const faqContainer = document.getElementById('faq-container');
+  faqContainer.innerHTML = '';
+  SITE.faq.forEach(fq => {
+    const item = document.createElement('details');
+    item.innerHTML = `<summary>${fq.q}</summary><p>${fq.a}</p>`;
+    faqContainer.appendChild(item);
+  });
+
+  // Footer Ano
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
 }
 
-/**
- * Inicializa a Intersection Observer API para detecção de scroll elegante
- */
-function configurarAnimacaoScroll() {
+function inicializarAnimacaoScroll() {
   const elementos = document.querySelectorAll('.reveal');
-  
-  const observerOptions = {
-    root: null,
-    threshold: 0.15, // Ativa quando 15% do bloco entra na janela visual
-    rootMargin: "0px 0px -50px 0px"
-  };
-
-  const observer = new IntersectionObserver((entries, observer) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target); // Libera memória parando de rastrear o elemento visível
       }
     });
-  }, observerOptions);
-
+  }, { threshold: 0.1 });
   elementos.forEach(el => observer.observe(el));
 }
