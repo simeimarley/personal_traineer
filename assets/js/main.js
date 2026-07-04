@@ -16,8 +16,12 @@ function renderizarDadosPremium() {
   document.getElementById('hero-subline').textContent = SITE.trainer.subline;
   document.getElementById('about-bio').textContent = SITE.trainer.subline;
 
-  // Imagens dinâmicas
-  document.getElementById('about-img').src = SITE.trainer.photo;
+  // 📸 Imagens dinâmicas (Aqui estava o detalhe!)
+  const heroBg = document.getElementById('hero-bg-img');
+  if (heroBg) {
+    heroBg.src = SITE.trainer.photo; // Injeta a foto no fundo do Hero
+  }
+  document.getElementById('about-img').src = SITE.trainer.photo; //[cite: 5]
 
   // URLs Inteligentes do WhatsApp
   const linkWhats = `https://wa.me/${SITE.whatsapp.phone}?text=${encodeURIComponent(SITE.whatsapp.message)}`;
