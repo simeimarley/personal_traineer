@@ -64,19 +64,34 @@ function renderizarDadosPremium() {
   });
 
   // Renderizar Cards de Serviços
+  // ==========================================================================
+  // RENDERIZAR CARDS DE SERVIÇOS COM ÍCONES DINÂMICOS
+  // ==========================================================================
   const servicesContainer = document.getElementById('services-container');
-  servicesContainer.innerHTML = '';
-  SITE.services.forEach(sv => {
-    const card = document.createElement('div');
-    card.className = 'card';
+  servicesContainer.innerHTML = ''; 
+
+  // Mapa de vetores SVG nativos extraídos do Lovable
+  const iconesMap = {
+    dumbbell: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6v12M18 6v12M2 10v4M22 10v4M6 12h12"/></svg>`,
+    wifi: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01"/></svg>`,
+    heart: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>`
+  };
+
+  SITE.services.forEach(sv => { 
+    const card = document.createElement('div'); 
+    card.className = 'card'; 
+    
+    // Busca o SVG correspondente no mapa ou usa o halter como padrão caso falte preenchimento
+    const svgIcone = iconesMap[sv.icon] || iconesMap['dumbbell'];
+
     card.innerHTML = `
       <div class="card__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
+        ${svgIcone}
       </div>
-      <h3>${sv.title}</h3>
-      <p>${sv.desc}</p>
+      <h3>${sv.title}</h3>[cite: 5]
+      <p>${sv.desc}</p>[cite: 5]
     `;
-    servicesContainer.appendChild(card);
+    servicesContainer.appendChild(card); 
   });
 
   // Renderizar Cards de Planos Comerciais

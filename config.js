@@ -27,9 +27,9 @@ export const SITE = {
     greeting: "Olá! Sou o assistente virtual do Marley. Como posso te ajudar na sua jornada de treinos hoje?" 
   },
   services: [
-    { title: "Treino Presencial", desc: "Acompanhamento 1-a-1 na academia parceira, com plano personalizado." },
-    { title: "Consultoria Online", desc: "Plano semanal, vídeos dos exercícios e feedback contínuo por app." },
-    { title: "Reeducação Postural", desc: "Programas para dores crônicas, mobilidade e qualidade de vida." }
+    { icon: "dumbbell", title: "Treino Presencial", desc: "Acompanhamento 1-a-1 na academia parceira, com plano personalizado." },
+    { icon: "wifi", title: "Consultoria Online", desc: "Plano semanal, vídeos dos exercícios e feedback contínuo por app." },
+    { icon: "heart", title: "Reeducação Postural", desc: "Programas para dores crônicas, mobilidade e qualidade de vida." }
   ],
   plans: [
     { name: "Online Essencial", price: "199", features: ["Treino personalizado", "App exclusivo", "Suporte por chat"], recommended: false, customPrice: "" },
@@ -53,6 +53,6 @@ export const SITE = {
   },
   seo: { 
     title: "Marley | Personal Trainer", 
-    description: "Transforme seu corpo e reprograme sua mente com treinos personalizados em São Paulo." 
+    description: "Transforme seu corpo e reprograme sua mente com treinos personalizados em Salvador." 
   }
 };
