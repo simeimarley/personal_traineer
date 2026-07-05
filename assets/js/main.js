@@ -63,7 +63,6 @@ function renderizarDadosPremium() {
     statsContainer.appendChild(statItem);
   });
 
-  // Renderizar Cards de Serviços
   // ==========================================================================
   // RENDERIZAR CARDS DE SERVIÇOS COM ÍCONES DINÂMICOS
   // ==========================================================================
@@ -88,8 +87,8 @@ function renderizarDadosPremium() {
       <div class="card__icon">
         ${svgIcone}
       </div>
-      <h3>${sv.title}</h3>[cite: 5]
-      <p>${sv.desc}</p>[cite: 5]
+      <h3>${sv.title}</h3>
+      <p>${sv.desc}</p>
     `;
     servicesContainer.appendChild(card); 
   });
@@ -133,6 +132,37 @@ function renderizarDadosPremium() {
     item.innerHTML = `<summary>${fq.q}</summary><p>${fq.a}</p>`;
     faqContainer.appendChild(item);
   });
+
+// ==========================================================================
+  // RENDERIZAR ÍCONES SOCIAIS NO FOOTER
+  // ==========================================================================
+  const socialsContainer = document.getElementById('socials-container');
+  if (socialsContainer) {
+    socialsContainer.innerHTML = '';
+
+    // Mapeamento dos SVGs exatos do Lovable para manter a identidade premium[cite: 7]
+    const socialIconsMap = {
+      instagram: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" /></svg>`,
+      youtube: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3" /><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none" /></svg>`,
+      tiktok: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3v10a4 4 0 1 1-4-4" /><path d="M15 3a5 5 0 0 0 5 5" /></svg>`
+    };
+
+    // Percorre dinamicamente o objeto social do seu config.js
+    Object.keys(SITE.social).forEach(key => {
+      const url = SITE.social[key];
+      
+      // Só cria o botão se a URL estiver preenchida no config.js
+      if (url) {
+        const socialLink = document.createElement('a');
+        socialLink.href = url;
+        socialLink.target = '_blank';
+        socialLink.rel = 'noopener noreferrer';
+        socialLink.setAttribute('aria-label', key);
+        socialLink.innerHTML = socialIconsMap[key] || '';
+        socialsContainer.appendChild(socialLink);
+      }
+    });
+  }
 
   document.getElementById('footer-year').textContent = new Date().getFullYear();
 }
