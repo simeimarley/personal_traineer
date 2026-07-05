@@ -12,7 +12,28 @@ function renderizarDadosPremium() {
   document.title = SITE.seo.title;
   document.querySelector('meta[name="description"]').setAttribute('content', SITE.seo.description);
   document.getElementById('brand-logo').innerHTML = `${SITE.trainer.name.toUpperCase()}<span>.</span>`;
-  document.getElementById('hero-title').textContent = SITE.trainer.tagline;
+  // ==========================================================================
+  // INJEÇÃO INTELIGENTE DO TÍTULO HERO (PRESERVANDO O GRADIENTE PREMIUM)
+  // ==========================================================================
+  const titleElement = document.getElementById('hero-title');
+
+  if (titleElement) {
+    const tagline = SITE.trainer.tagline;
+
+    // Se a frase tiver ponto final, divide para isolar o efeito na segunda parte
+    if (tagline.includes('.')) {
+      const parts = tagline.split('.');
+      const firstPart = parts[0] ? parts[0] + '.' : '';
+      const secondPart = parts[1] ? parts[1].trim() : '';
+
+      // Reconstrói o HTML aplicando o <span> na segunda metade da frase
+      titleElement.innerHTML = `${firstPart} <span>${secondPart}</span>`;
+    } else {
+      // Caso não encontre o ponto, injeta o texto corrido por segurança
+      titleElement.textContent = tagline;
+    }
+  }
+//   document.getElementById('hero-title').textContent = SITE.trainer.tagline;
   document.getElementById('hero-subline').textContent = SITE.trainer.subline;
   document.getElementById('about-bio').textContent = SITE.trainer.subline;
 
