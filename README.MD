@@ -1,26 +1,73 @@
-# 🏋️ Landing Page Coringa para Personal Trainer & Chatbot Groq
+# 🏋️‍♂️ MITS Trainer — Landing Page Premium & Inteligente
 
-Template de Landing Page profissional de alta performance, projetado de forma modular (Mobile-First), totalmente customizável através de um único arquivo de configuração (`config.js`). Pronto para rodar na infraestrutura Serverless da Vercel de forma segura.
+[![Vercel Production](https://img.shields.io/badge/Production-Live-success?style=for-the-badge&logo=vercel)](https://mits-trainer.vercel.app)
+[![Tech Stack](https://img.shields.io/badge/Stack-Vanilla_JS_%7C_Node.js-orange?style=for-the-badge)](https://mits-trainer.vercel.app)
 
-## 📁 Como Customizar para um Novo Cliente
+Uma Landing Page de altíssima conversão projetada especificamente para Personal Trainers de elite que buscam posicionamento de mercado e automação de captação de leads. Este projeto foi desenvolvido como um case de sucesso de arquitetura leve, segura e escalável pela **Marley IT Solutions**.
 
-Mudar o cliente exige apenas alterações em duas áreas:
+🚀 **Acesse o projeto homologado em:** [mits-trainer.vercel.app](https://mits-trainer.vercel.app)
 
-1.  **Imagens e Identidade Visual:**
-    *   Substitua as mídias da pasta `/assets/img/`. Salve preferencialmente em formato `.webp` ou `.jpg` otimizado:
-        *   `hero.jpg`: Foto principal de impacto do treinador.
-        *   `antes1.jpg`, `depois1.jpg`: Fotos do carrossel de transformações corporais.
-2.  **Modificação de Conteúdo:**
-    *   Abra o arquivo `/config.js` na raíz e altere os campos dentro do objeto `SITE`. É possível alterar:
-        *   Nome do profissional e slogans da marca.
-        *   Cores em formato Hexadecimal (o script reconfigura o CSS automaticamente).
-        *   Listagem e descrição de planos/valores e serviços oferecidos.
+---
 
-## 🚀 Como subir para o GitHub e Vercel
+## 🎯 Diferenciais do Projeto (Valor de Negócio)
 
-Siga as etapas abaixo para realizar a publicação estável:
-1.Configuração Inicial do Repositório:No Terminal local.Inicialize o Git na pasta raíz do projeto executando os comandos:git initgit add .git commit -m "feat: estrutura base do template modular"
-2.Vincular ao GitHub:Crie um repositório vazio no GitHub.Copie a URL do seu repositório remoto e rode no terminal local:git remote add origin SUA_URL_DO_GITHUBgit branch -M maingit push -u origin main
-3.Conexão com o Painel Vercel:Hospedagem gratuita e segura.Acesse o painel da Vercel, clique em Add New > Project e importe o repositório que você acabou de subir para o GitHub.
-4.Injetar Variáveis de Ambiente:Proteção de Chaves.Antes de clicar no botão "Deploy", expanda a seção Environment Variables. Adicione uma variável com a chave GROQ_API_KEY e insira o token que você gerou no painel da Groq.
-5.Deploy e Validação:Menos de 1 minuto.Clique em Deploy. A Vercel vai compilar os arquivos e criar a rota serverless /api/chat.js de maneira automática. O link final de produção será gerado em instantes.
+Diferente de páginas comuns construídas em criadores de site pesados (WordPress, Wix), esta solução foi codificada do zero focando em performance brutal, SEO agressivo e experiência de usuário fluida.
+
+- **Design System Moderno:** Construído inteiramente com tokens dinâmicos usando o modelo de cores `oklch()`, garantindo contrastes perfeitos e apelo estético minimalista luxuoso.
+- **Assistente IA Integrado:** Chatbot nativo conectado à API da Groq (`llama-3.1-8b-instant`) que atua como um recepcionista virtual 24/7, qualificando o lead antes de direcioná-lo ao WhatsApp.
+- **Performance 100/100:** Carregamento instantâneo por não utilizar frameworks pesados no cliente (React, Vue), rodando puramente em Vanilla Tech Stack.
+- **Abstracção por Configuração:** Toda a regra de negócio do cliente (preços, planos, biografia, redes sociais) é isolada em um único arquivo de configuração centralizado (`config.js`). Mudar o cliente leva menos de 2 minutos.
+
+---
+
+## 🏗️ Arquitetura e Engenharia de Software
+
+O projeto foi dividido em uma arquitetura híbrida para garantir segurança corporativa e desacoplamento:
+
+### 📺 Front-end (Client-side)
+
+- **HTML5 & CSS3 Premium:** Uso de propriedades modernas como `clamp()` para tipografia responsiva adaptável e `color-mix()` para transparências nativas sem degradação de processamento.
+- **Vanilla JS (ES6+):** Manipulação cirúrgica do DOM para injeção de dados dinâmica, controle de estados de componentes e efeitos de scroll reveal.
+- **Segurança em Navegação:** Todos os gatilhos externos usam blindagem com atributos `target="_blank"` aliados a `rel="noopener noreferrer"`, prevenindo vulnerabilidades de engenharia reversa na aba de origem (_tab-nabbing_).
+
+### ⚙️ Back-end (Server-side)
+
+- **Vercel Serverless Functions:** A comunicação com a API de inteligência artificial é isolada em um ambiente Node.js seguro backend (`/api/chat.js`). A chave privada (`GROQ_API_KEY`) nunca é exposta ao navegador do usuário.
+- **Memory Rate Limiting:** Implementação de algoritmo simples de controle de fluxo de requisições por IP diretamente em memória (Limite de 20 requisições por minuto por usuário), mitigando ataques de negação de serviço (DoS) e controle de custos de infraestrutura.
+- **Sanitização Pesada de Dados:** O backend filtra e sanitiza o payload de mensagens interceptando injeções de prompt no client-side, limitando mensagens a um teto rígido de caracteres e histórico de contexto histórico.
+
+---
+
+## ⚙️ Como Utilizar e Customizar (Open-Source)
+
+Este é um projeto público e distribuído sob o conceito de template modular. Sinta-se livre para clonar, modificar e utilizar para os seus próprios clientes.
+
+### 1. Clonando o Repositório
+
+```bash
+git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+cd seu-repositorio
+```
+### 2. Customizando as Informações do Cliente
+Toda a alteração visual, de texto ou links de contato deve ser feita exclusivamente alterando as propriedades do arquivo raiz:
+📁 config.js
+
+### 3. Configurando as Variáveis de Ambiente (Backend AI)
+Para habilitar o assistente virtual inteligente, crie um arquivo .env na raiz do projeto para testes locais:
+
+GROQ_API_KEY=sua_chave_secreta_aqui
+
+Ao realizar o deploy na Vercel, adicione a variável GROQ_API_KEY diretamente no painel de configurações do projeto (Settings > Environment Variables) para garantir o funcionamento seguro em produção.
+
+# 👨‍💻 Desenvolvido por
+Este projeto foi planejado, arquitetado e executado pela Marley IT Solutions como parte do nosso portfólio oficial de soluções de alta engenharia para a web.
+
+Se a sua empresa precisa de sistemas robustos, landing pages de alta conversão ou integrações inteligentes com Inteligência Artificial, entre em contato conosco.
+
+Website/Portfólio: mits-trainer.vercel.app
+
+LinkedIn: [\[Seu Link do LinkedIn\]](https://www.linkedin.com/in/simei-marley/)
+
+Contato Corporativo: marleyitsolutions@gmail.com
+
+Licença MITS - Sinta-se livre para usar, modificar e distribuir conforme sua necessidade comercial.
