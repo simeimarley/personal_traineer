@@ -46,7 +46,12 @@ function renderizarDadosPremium() {
 
   // URLs Inteligentes do WhatsApp
   const linkWhats = `https://wa.me/${SITE.whatsapp.phone}?text=${encodeURIComponent(SITE.whatsapp.message)}`;
-  document.querySelectorAll('.cta-whatsapp').forEach(el => el.setAttribute('href', linkWhats));
+  // Força todos os botões estáticos do Whats a abrirem em nova guia com segurança
+  document.querySelectorAll('.cta-whatsapp').forEach(el => {
+    el.setAttribute('href', linkWhats);
+    el.setAttribute('target', '_blank');
+    el.setAttribute('rel', 'noopener noreferrer');
+  });
 
   // Renderizar Caixas de Estatísticas (Stats)
   const statsContainer = document.getElementById('stats-container');
@@ -91,8 +96,7 @@ function renderizarDadosPremium() {
       <h3>${pl.name}</h3>
       <div class="plan__price">${precoHtml}</div>
       <ul>${featuresHtml}</ul>
-      <a href="${linkWhats}" class="btn ${pl.recommended ? 'btn--primary' : 'btn--ghost'}">Quero este</a>
-    `;
+      <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn ${pl.recommended ? 'btn--primary' : 'btn--ghost'}">Quero este</a>`;
     plansContainer.appendChild(card);
   });
 

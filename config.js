@@ -1,7 +1,7 @@
 // config.js
 export const SITE = {
   trainer: { 
-    name: "Rafael", 
+    name: "Marley", 
     tagline: "Transforme seu corpo. Reprograme sua mente.", 
     subline: "Programas 100% personalizados de treino e nutrição, presencial ou online. Resultados reais em semanas — sem promessas mágicas.",
     photo: "assets/img/hero.jpg" // Aqui o cliente coloca a foto dele
@@ -20,11 +20,11 @@ export const SITE = {
   ],
   whatsapp: { 
     phone: "5511999999999", 
-    message: "Olá, Rafael! Vi seu site e quero agendar minha avaliação gratuita." 
+    message: "Olá, Marley! Vi seu site e quero agendar minha avaliação gratuita." 
   },
   chatbot: { 
     enabled: true, 
-    greeting: "Olá! Sou o assistente virtual do Rafael. Como posso te ajudar na sua jornada de treinos hoje?" 
+    greeting: "Olá! Sou o assistente virtual do Marley. Como posso te ajudar na sua jornada de treinos hoje?" 
   },
   services: [
     { title: "Treino Presencial", desc: "Acompanhamento 1-a-1 na academia parceira, com plano personalizado." },
@@ -52,7 +52,7 @@ export const SITE = {
     tiktok: "https://tiktok.com" 
   },
   seo: { 
-    title: "Rafael | Personal Trainer", 
+    title: "Marley | Personal Trainer", 
     description: "Transforme seu corpo e reprograme sua mente com treinos personalizados em São Paulo." 
   }
 };
