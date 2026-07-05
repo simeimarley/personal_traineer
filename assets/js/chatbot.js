@@ -2,98 +2,125 @@
 import { SITE } from '../../config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (!SITE.chatbot.enabled) {
-    document.getElementById('chatbot-toggle').style.display = 'none';
+  const toggleBtn = document.getElementById('chat-toggle');
+  const closeBtn = document.getElementById('chat-close');
+  const panel = document.getElementById('chat-panel');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const messagesContainer = document.getElementById('chat-messages');
+
+  // Segurança: Se o chatbot estiver desativado no config.js, oculta o botão e aborta
+  if (!SITE.chatbot || !SITE.chatbot.enabled) {
+    if (toggleBtn) toggleBtn.style.display = 'none';
     return;
   }
 
-  const toggleBtn = document.getElementById('chatbot-toggle');
-  const closeBtn = document.getElementById('chatbot-close');
-  const panel = document.getElementById('chatbot-panel');
-  const form = document.getElementById('chatbot-form');
-  const input = document.getElementById('chatbot-input');
-  const msgContainer = document.getElementById('chatbot-messages');
+  // Injeta a mensagem de saudação inicial se o container estiver vazio
+  if (messagesContainer && messagesContainer.children.length === 0) {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'msg msg--bot';
+    botMsg.textContent = SITE.chatbot.greeting || 'Olá! Como posso te ajudar hoje?';
+    messagesContainer.appendChild(botMsg);
+  }
 
-  // Histórico local de mensagens da sessão para manter a IA ciente do contexto
-  let historicoMensagens = [
-    { role: "system", content: `Você é um assistente virtual focado em vendas e dúvidas do Personal Trainer ${SITE.trainer.name}. Seja profissional, motivador e tente direcionar o usuário para agendar uma avaliação física via WhatsApp. Responda de forma concisa.` }
-  ];
+  // Função centralizada para abrir o painel
+  function abrirPainel() {
+    panel.style.display = 'flex';
+    // Pequeno delay de 10ms para o navegador registrar o display antes de aplicar a animação CSS
+    setTimeout(() => panel.classList.add('is-active'), 10);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
 
-  // Injeta mensagem de boas-vindas definida no config.js
-  adicionarMensagemNaTela('bot', SITE.chatbot.greeting);
+  // Função centralizada para fechar o painel
+  function fecharPainel() {
+    panel.classList.remove('is-active');
+    // Aguarda os 250ms da animação de fade-out do CSS terminar para aplicar o display none
+    setTimeout(() => {
+      panel.style.display = 'none';
+    }, 250);
+  }
 
-  // Eventos de Visibilidade
-  toggleBtn.addEventListener('click', abrirChat);
-  closeBtn.addEventListener('click', fecharChat);
+  // Alterna o estado do painel usando a propriedade calculada real do navegador (Garante funcionamento 100%)
+  if (toggleBtn && panel) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = window.getComputedStyle(panel).display === 'none';
+      if (isHidden) {
+        abrirPainel();
+      } else {
+        fecharPainel();
+      }
+    });
+  }
 
-  // Fechamento via Tecla ESC (Acessibilidade)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && panel.classList.contains('active')) {
-      fecharChat();
+  if (closeBtn) {
+    closeBtn.addEventListener('click', fecharPainel);
+  }
+
+  // Atalho de acessibilidade: fecha o chat ao pressionar a tecla ESC
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel.style.display === 'flex') {
+      fecharPainel();
     }
   });
 
-  // Captura do Envio da Mensagem
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const textoLimpo = input.value.trim();
-    if (!textoLimpo) return;
+  // Gerenciamento e envio de mensagens para o backend seguro
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
 
-    // Sanitização básica e prevenção de estouro de tela
-    input.value = '';
-    adicionarMensagemNaTela('user', textoLimpo);
-    historicoMensagens.push({ role: "user", content: textoLimpo });
+      input.value = '';
+      
+      // Criar e renderizar o balão do usuário
+      const userBubble = document.createElement('div');
+      userBubble.className = 'msg msg--user';
+      userBubble.textContent = text;
+      messagesContainer.appendChild(userBubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // Cria efeito visual de carregamento ("...")
-    const bubbleDigitando = adicionarMensagemNaTela('bot', 'Digitando...');
+      // Criar o indicador visual de digitação da IA
+      const typingBubble = document.createElement('div');
+      typingBubble.className = 'msg msg--bot msg--typing';
+      typingBubble.textContent = 'Digitando...';
+      messagesContainer.appendChild(typingBubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: historicoMensagens })
-      });
+      // Captura o histórico de mensagens da tela para enviar como contexto estruturado para a API
+      const mensagensAtuais = Array.from(messagesContainer.querySelectorAll('.msg:not(.msg--typing)'));
+      const historicoContexto = mensagensAtuais.map(el => ({
+        role: el.classList.contains('msg--user') ? 'user' : 'assistant',
+        content: el.textContent
+      })).slice(-20); // Sanitização: envia apenas as últimas 20 mensagens para controle de limite
 
-      bubbleDigitando.remove(); // Remove o balão indicador de digitação
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: historicoContexto })
+        });
 
-      if (!response.ok) throw new Error('Falha na resposta do servidor.');
+        typingBubble.remove();
 
-      const dados = await response.json();
-      const respostaIA = dados.choices[0].message.content;
+        if (!res.ok) throw new Error();
 
-      adicionarMensagemNaTela('bot', respostaIA);
-      historicoMensagens.push({ role: "assistant", content: respostaIA });
+        const data = await res.json();
+        // Mapeamento direto da propriedade calculada no nosso handler serverless do Node.js
+        const botResponse = data.reply; 
 
-    } catch (error) {
-      if(bubbleDigitando) bubbleDigitando.remove();
-      adicionarMensagemNaTela('bot', 'Desculpe, meu sistema está passando por manutenção temporária. Você pode falar diretamente comigo no WhatsApp!');
-      console.error('Chatbot Error:', error);
-    }
-  });
+        const replyBubble = document.createElement('div');
+        replyBubble.className = 'msg msg--bot';
+        replyBubble.textContent = botResponse;
+        messagesContainer.appendChild(replyBubble);
+      } catch (error) {
+        typingBubble.remove();
+        const errorBubble = document.createElement('div');
+        errorBubble.className = 'msg msg--bot';
+        errorBubble.textContent = 'Estou passando por uma manutenção rápida. Clique no botão do WhatsApp abaixo para falar comigo direto!';
+        messagesContainer.appendChild(errorBubble);
+      }
 
-  function abrirChat() {
-    panel.classList.add('active');
-    panel.setAttribute('aria-hidden', 'false');
-    toggleBtn.setAttribute('aria-expanded', 'true');
-    setTimeout(() => input.focus(), 300); // Foca no input automaticamente
-  }
-
-  function fecharChat() {
-    panel.classList.remove('active');
-    panel.setAttribute('aria-hidden', 'true');
-    toggleBtn.setAttribute('aria-expanded', 'false');
-    toggleBtn.focus();
-  }
-
-  /**
-   * Helper que injeta os balões textuais tratando injeção de tags maliciosas
-   */
-  function adicionarMensagemNaTela(remetente, texto) {
-    const bubble = document.createElement('div');
-    bubble.className = `msg msg-${remetente}`;
-    bubble.textContent = texto; // Proteção XSS Absoluta contra injeções HTML
-    msgContainer.appendChild(bubble);
-    msgContainer.scrollTop = msgContainer.scrollHeight; // Auto-scroll para a última mensagem
-    return bubble;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
   }
 });
